@@ -1,30 +1,29 @@
-<!-- 210105 -->
+<!-- 210106 -->
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<script src="html/showPage.js"></script>
+<title>html/employeeForm.html</title>
+
+<!-- show page 정의하는 javascript 소스 연결 -->
+<script src="showPage.js"></script>
 </head>
 <body>
-
-	<!-- 화면에 게시판 데이터 테이블 형식으로 출력 -->
-	<!-- 요구사항: DAO, Servlet, Servlet가지고 Ajax 호출(XMLHttpRequest() -->
 
 	<div id="show"></div>
 
 	<script>
 		let xhtp = new XMLHttpRequest();
-
+		
 		//home = WebServlet 안에 있는 주소(HomeServlet.java)
 		//HomeServlet.java가 상위에 있으므로 ../ 으로 경로 지정
 		//경로 헷갈리지 않도록 연습할 것
-
-		xhtp.open('get', 'boardList');
+		// ../home = from HomeServlet
+		
+		xhtp.open('get', '../home');
 		xhtp.send();
 		xhtp.onload = showPage;
 	</script>
-
 </body>
 </html>

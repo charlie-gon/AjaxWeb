@@ -35,8 +35,29 @@ public class EmpDAO {
 		}
 	}//end of 생성자
 	
+	// 삭제 기능 추가_210106
+	public boolean deleteEmp(EmployeeVO vo) {
+		String sql = "delete from emp_temp where employee_id = ?";
+		int r = 0;
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, vo.getEmployeeId());
+			
+			r = pstmt.executeUpdate();
+			System.out.println(r + "건 삭제됨.");
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//r값 1이면 true or false
+		return r == 1 ? true : false;
+		
+	} // end of deleteEmp
+	
 	public List<EmployeeVO> getEmpList() {
-		String sql = "select * from employees";
+		String sql = "select * from emp_temp order by 1 desc";
 		List<EmployeeVO> list = new ArrayList<>();
 		
 		try {
