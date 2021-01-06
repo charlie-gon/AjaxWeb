@@ -1,4 +1,6 @@
-// 210106
+/**
+ * 
+ */// 210106
 // employeeForm.html 과 연동
 
 /**
@@ -16,22 +18,47 @@ function showPage() {
 	// 테이블 생성
 	let tableTag = document.createElement('table');
 	tableTag.setAttribute('border', '1');
+	tableTag.setAttribute('id', 'tbl');
 
 	// 아래쪽 function 가져오기
+	// title tr
+	// data tr =?[배열]
 	let headerTr = titleRow(data); //data = 실제 값
 	let dataTrs = contentRow(data);
 
 	tableTag.appendChild(headerTr);
 	for (let i = 0; i < dataTrs.length; i++) {
-		tableTag.appendChild(dataTrs[i]);
+		tableTag.appendChild(addBtn(dataTrs[i], delFunc));
 	}
 
 	document.getElementById('show').appendChild(tableTag);
 }
 
+function delFunc() {
+	this.parentNode.parentNode.remove();
+	let id = this.parentNode.parentNode.childNodes[0].firstChild.nodeValue;
+	let req = new XMLHttpRequest();
+	req.open('get','../deleteEmp?empId=' + id);
+	req.send();
+	req.onload = function(){
+		console.log(req.responseText);
+	}
+}
+
+
+//오후수업_버튼 추가 및 이벤트 등록
+function addBtn(tr, callBackFunc) {
+	let butn = document.createElement('button');
+	butn.innerHTML = '삭제';
+
+	let tdTag = document.createElement('td');
+	tdTag.append(butn);
+	tr.append(tdTag);
+	return tr;
+}
+
 // Title
 function titleRow(result) { //result = 매개변수
-	console.log(result[0].childNodes[3].nodeName);
 
 	let trTag = document.createElement('tr');
 	for (let i = 0; i < result[0].childNodes.length; i++) {
@@ -39,21 +66,9 @@ function titleRow(result) { //result = 매개변수
 		let textNode = document.createTextNode(result[0].childNodes[i].nodeName.toUpperCase());
 		tdTag.appendChild(textNode);
 		trTag.appendChild(tdTag);
-		
-		//tdTag onmouseover/out
-		tdTag.onmouseover = function() {
-			tdTag.style.backgroundColor = "yellow";
-		}
-		tdTag.onmouseout = function() {
-			tdTag.style.backgroundColor = "";
-		}// tdTag onmouseover/out end
-		
+
 	}
-
 	return trTag;
-
-
-
 
 }//end of titleRow
 
@@ -73,48 +88,6 @@ function contentRow(result) {
 			tdTag.appendChild(textNode);
 			trTag.appendChild(tdTag);
 		}
-
-		// td에 onmouseover/out 적용
-
-		trTag.onmouseover = function() {
-			trTag.style.backgroundColor = "turquoise";
-		}
-
-		trTag.onmouseout = function() {
-			trTag.style.backgroundColor = "";
-		}
-
-		// td에 onmouseover/out 적용
-		// 아래 구문에서 event / target의 용법은?
-		//trTag.addEventListener("mouseover", function(event){
-		//	event.target.style.backgroundColor = "yellow";
-
-		//});
-
-		//trTag.addEventListener("mouseout",function(event){
-		//	event.target.style.backgroundColor = "";
-		//});
-
-
-		// 임의 버튼 추가
-		let button = document.createElement('button');
-		button.innerHTML = '삭제';
-		button.onclick = function() {
-
-			// parentNode 하나씩 추가 할때마다 td-tr-table 순으로 적용됨
-			console.log(this.parentNode.parentNode.remove());
-			let id = this.parentNode.parentNode.childNodes[0].firstChild.nodeValue;
-			let req = new XMLHttpRequest();
-			req.open('get', '../deleteEmp?empId=' + id);
-			req.send();
-			req.onload = function() {
-				console.log(req.responseText);
-			}
-		}
-		let tdTag = document.createElement('td');
-		tdTag.appendChild(button);
-		trTag.appendChild(tdTag);
-
 		trTags.push(trTag);
 
 	}//end of contentRow

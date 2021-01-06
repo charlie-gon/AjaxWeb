@@ -35,6 +35,36 @@ public class EmpDAO {
 		}
 	}//end of 생성자
 	
+	// 오후수업_데이터 한 건 입력
+	public boolean insertEmp(EmployeeVO vo) {
+		String sql = "insert into emp_temp(employee_id, first_name, last_name, email, hire_date, job_id)"
+				+ "values(employees_seq.nextval, ?,?,?,sysdate,?)";
+		
+		int r = 0;
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getFirstName());
+			pstmt.setString(2, vo.getLastName());
+			pstmt.setString(3, vo.getEmail());
+			pstmt.setString(4, vo.getJobId());
+			r = pstmt.executeUpdate();
+			
+			System.out.println(r + "건 입력.");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return r == 1 ? true:false;
+	}// end of insertEmp
+	
 	// 삭제 기능 추가_210106
 	public boolean deleteEmp(EmployeeVO vo) {
 		String sql = "delete from emp_temp where employee_id = ?";
@@ -42,7 +72,7 @@ public class EmpDAO {
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, vo.getEmployeeId());
-			
+		
 			r = pstmt.executeUpdate();
 			System.out.println(r + "건 삭제됨.");
 			
