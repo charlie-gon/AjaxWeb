@@ -1,0 +1,97 @@
+<!-- 210107 -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>html/employeeForm2.html</title>
+
+<!-- show page 정의하는 javascript 소스 연결 -->
+<script src="showPage2.js"></script>
+</head>
+<body>
+	<!-- 오후수업_insertEmp -->
+	<table>
+		<tr>
+			<td>firstName</td>
+			<td><input type='text' id='fName' name='fName' value='DongWon'></td>
+		</tr>
+		<tr>
+			<td>lastName</td>
+			<td><input type='text' id='lName' name='lName' value='Kang'></td>
+		</tr>
+		<tr>
+			<td>email</td>
+			<td><input type='text' id='email' name='email' value='ChamChi'></td>
+		</tr>
+		<tr>
+			<td>jobId</td>
+			<td><input type='text' id='jobId' name='jobId' value='IT_PROG'></td>
+		</tr>
+
+		<tr>
+			<td><button id='btn' onclick='saveBtn()'>저장</button></td>
+			<td><button id='btn' onclick='modifyBtn()'>수정</button></td>
+			
+		</tr>
+	</table>
+
+	<div id="show"></div>
+
+	<script>
+		function saveBtn() {
+			console.log(this);
+			let fName = document.getElementById('fName').value;
+			let lName = document.getElementById('lName').value;
+			let email = document.getElementById('email').value;
+			let jobId = document.getElementById('jobId').value;
+
+			let url = '../addEmp?fName=' + fName + '&lName=' + lName
+					+ '&email=' + email + '&jobId=' + jobId;
+			let saveReq = new XMLHttpRequest();
+			saveReq.open('get', url);
+			saveReq.send();
+			saveReq.onload = function() {
+				console.log(saveReq.responseXML);
+				let doc = saveReq.responseXML;
+				let result = doc.getElementsByTagName('result');
+				
+				console.log(result[0].childNodes); // 출력 테스트
+				
+				//화면구성
+				//저장 누르면 사원 정보 테이블에 삽입
+				//employeeForm.html 소스 사용하면 복잡하므로 아래와 같이 간소화 했음
+				let trTag = document.createElement('tr');
+				
+				for(let i = 0; i<result[0].childNodes.length; i++){
+					let tdTag = document.createElement('td');
+					
+					//첫번째 데이터(result[0]) 순차적으로 돌면서
+					//입력 받은 사원 정보 컬럼 이름 가져옴(childNodes[i])
+					//컬럼의 가장 첫번째 데이터의 값을 가져옴(firstChild.nodeValue)
+					let val = result[0].childNodes[i].firstChild.nodeValue;
+					let tNode = document.createTextNode(val);
+					tdTag.appendChild(tNode);
+					trTag.appendChild(tdTag);
+					
+				}
+					//삭제 버튼 추가
+					addBtn(trTag, delFunc);					
+				
+				document.getElementById('tbl').appendChild(trTag);
+			}
+		}//end of saveBtn()
+
+		let xhtp = new XMLHttpRequest();
+
+		//home = WebServlet 안에 있는 주소(HomeServlet.java)
+		//HomeServlet.java가 상위에 있으므로 ../ 으로 경로 지정
+		//경로 헷갈리지 않도록 연습할 것
+		// ../home = from HomeServlet
+
+		xhtp.open('get', '../home');
+		xhtp.send();
+		xhtp.onload = showPage;
+	</script>
+</body>
+</html>

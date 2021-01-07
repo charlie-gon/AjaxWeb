@@ -35,22 +35,49 @@ public class EmpDAO {
 		}
 	}//end of 생성자
 	
-	// 오후수업_데이터 한 건 입력
-	public boolean insertEmp(EmployeeVO vo) {
+	// 데이터 한 건 입력
+	public EmployeeVO insertEmp(EmployeeVO vo) {
+		String sql1 = "select employees_seq.nextval from dual";
+		String sql2 = "select * from emp_temp where employee_id = ?";
 		String sql = "insert into emp_temp(employee_id, first_name, last_name, email, hire_date, job_id)"
-				+ "values(employees_seq.nextval, ?,?,?,sysdate,?)";
+				+ "values(?,?,?,?,sysdate,?)";
 		
 		int r = 0;
+		String newSeq = null;
+		EmployeeVO newVO = new EmployeeVO();
 		
+		// String sql1
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, vo.getFirstName());
-			pstmt.setString(2, vo.getLastName());
-			pstmt.setString(3, vo.getEmail());
-			pstmt.setString(4, vo.getJobId());
+			PreparedStatement pstmt = conn.prepareStatement(sql1);
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				newSeq = rs.getString(1);
+			}
+			// String sql
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, newSeq);
+			pstmt.setString(2, vo.getFirstName());
+			pstmt.setString(3, vo.getLastName());
+			pstmt.setString(4, vo.getEmail());
+			pstmt.setString(5, vo.getJobId());
 			r = pstmt.executeUpdate();
 			
 			System.out.println(r + "건 입력.");
+			
+			// String sql2
+			pstmt = conn.prepareStatement(sql2);
+			pstmt.setString(1, newSeq);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				newVO.setEmail(rs.getString("email"));
+				newVO.setEmployeeId(rs.getInt("employee_id"));
+				newVO.setFirstName(rs.getString("first_name"));
+				newVO.setHireDate(rs.getString("hire_date"));
+				newVO.setJobId(rs.getString("job_id"));
+				newVO.setLastName(rs.getString("last_name"));
+				newVO.setPhoneNumber(rs.getString("phone_number"));
+				newVO.setSalary(rs.getInt("salary"));
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -62,7 +89,8 @@ public class EmpDAO {
 				e.printStackTrace();
 			}
 		}
-		return r == 1 ? true:false;
+		return newVO;
+		
 	}// end of insertEmp
 	
 	// 삭제 기능 추가_210106
@@ -73,7 +101,10 @@ public class EmpDAO {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, vo.getEmployeeId());
 		
+			//executeUpdate() = 결과 값을 받아올 필요가 없을 때
+			//ex) insert, update, delete
 			r = pstmt.executeUpdate();
+			
 			System.out.println(r + "건 삭제됨.");
 			
 		} catch (SQLException e) {
@@ -92,7 +123,11 @@ public class EmpDAO {
 		
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
+			
+			//executeQuery() = 결과 값이 발생하여 값을 받아와야 할 때
+			//ex) select
 			ResultSet rs = pstmt.executeQuery();
+			
 			while(rs.next()) {
 				EmployeeVO vo = new EmployeeVO();
 				vo.setEmployeeId(rs.getInt("employee_id"));

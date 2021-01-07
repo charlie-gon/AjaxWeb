@@ -32,27 +32,29 @@ function showPage() {
 	}
 
 	document.getElementById('show').appendChild(tableTag);
-}
+
+}// end of showPage()
+
 
 function delFunc() {
 	this.parentNode.parentNode.remove();
 	let id = this.parentNode.parentNode.childNodes[0].firstChild.nodeValue;
 	let req = new XMLHttpRequest();
-	req.open('get','../deleteEmp?empId=' + id);
+	req.open('get', '../deleteEmp?empId=' + id);
 	req.send();
-	req.onload = function(){
+	req.onload = function() {
 		console.log(req.responseText);
 	}
-}
+} // end of delFunc()
 
 
 //오후수업_버튼 추가 및 이벤트 등록
 function addBtn(tr, callBackFunc) {
 	let butn = document.createElement('button');
 	butn.innerHTML = '삭제';
-
+	butn.onclick = callBackFunc;
 	let tdTag = document.createElement('td');
-	tdTag.append(butn);
+	tdTag.appendChild(butn);
 	tr.append(tdTag);
 	return tr;
 }
@@ -79,6 +81,7 @@ function contentRow(result) {
 
 	for (let j = 0; j < result.length; j++) {
 		let trTag = document.createElement('tr');
+
 		for (let i = 0; i < result[0].childNodes.length; i++) {
 			let tdTag = document.createElement('td');
 			let textNode = document.createTextNode(result[j].childNodes[i].firstChild.nodeValue);
@@ -87,10 +90,21 @@ function contentRow(result) {
 
 			tdTag.appendChild(textNode);
 			trTag.appendChild(tdTag);
+
+
 		}
 		trTags.push(trTag);
 
 	}//end of contentRow
 	return trTags;
 
+
+
 }// end of contentRow
+
+// tr 눌렀을 때 색 변환
+// tr 클릭 시 input에 값 삽입
+
+
+
+
