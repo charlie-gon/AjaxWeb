@@ -27,13 +27,15 @@ function showPage() {
 	let dataTrs = contentRow(data);
 
 	tableTag.appendChild(headerTr);
-	for (let i = 0; i < dataTrs.length; i++) {
-		tableTag.appendChild(addBtn(dataTrs[i], delFunc));
+	for(let i = 0; i < dataTrs.length; i++) {
+	tableTag.appendChild(addBtn(dataTrs[i], delFunc));
+
+
 	}
 
-	document.getElementById('show').appendChild(tableTag);
+document.getElementById('show').appendChild(tableTag);
 
-}// end of showPage()
+} // end of showPage()
 
 
 function delFunc() {
@@ -69,6 +71,8 @@ function titleRow(result) { //result = 매개변수
 		tdTag.appendChild(textNode);
 		trTag.appendChild(tdTag);
 
+
+
 	}
 	return trTag;
 
@@ -81,6 +85,8 @@ function contentRow(result) {
 
 	for (let j = 0; j < result.length; j++) {
 		let trTag = document.createElement('tr');
+		let empId = result[j].childNodes[0].firstChild.nodeValue;
+		trTag.setAttribute('id', 'emp_' + empId);
 
 		for (let i = 0; i < result[0].childNodes.length; i++) {
 			let tdTag = document.createElement('td');
@@ -92,6 +98,23 @@ function contentRow(result) {
 			trTag.appendChild(tdTag);
 
 
+			trTag.onmouseover = function() {
+				trTag.style.backgroundColor = "yellow";
+			}//
+
+			trTag.onmouseout = function() {
+				trTag.style.backgroundColor = "";
+			}//
+
+			trTag.onclick = function() {
+
+				let input = document.getElementsByTagName('input');
+				for (i = 0; i < 4; i++) {
+					input[i].value = this.childNodes[i].firstChild.nodeValue;
+				}
+			}
+
+
 		}
 		trTags.push(trTag);
 
@@ -101,9 +124,6 @@ function contentRow(result) {
 
 
 }// end of contentRow
-
-// tr 눌렀을 때 색 변환
-// tr 클릭 시 input에 값 삽입
 
 
 

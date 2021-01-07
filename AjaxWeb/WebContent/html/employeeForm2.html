@@ -12,6 +12,12 @@
 <body>
 	<!-- 오후수업_insertEmp -->
 	<table>
+	
+		<tr>
+			<td>empId</td>
+			<td><input type='text' id='empId' name='empId'></td>
+		</tr>
+		
 		<tr>
 			<td>firstName</td>
 			<td><input type='text' id='fName' name='fName' value='DongWon'></td>
@@ -72,15 +78,37 @@
 					let val = result[0].childNodes[i].firstChild.nodeValue;
 					let tNode = document.createTextNode(val);
 					tdTag.appendChild(tNode);
-					trTag.appendChild(tdTag);
-					
+					trTag.appendChild(tdTag);			
 				}
+				
 					//삭제 버튼 추가
 					addBtn(trTag, delFunc);					
 				
 				document.getElementById('tbl').appendChild(trTag);
 			}
 		}//end of saveBtn()
+		
+		
+		function modifyBtn(){
+			
+			console.log(this);
+			let fName = document.getElementById('fName').value;
+			let lName = document.getElementById('lName').value;
+			let email = document.getElementById('email').value;
+			let jobId = document.getElementById('jobId').value;
+			
+			let url = '../updateServlet?fName=' + fName + '&lName=' + lName
+			+ '&email=' + email + '&jobId=' + jobId;
+			let saveReq = new XMLHttpRequest();
+			saveReq.open('get', url);
+			saveReq.send();
+			saveReq.onload = function() {
+				console.log(saveReq.responseXML);
+				
+				
+			}
+			
+		}// end of modifyBtn()
 
 		let xhtp = new XMLHttpRequest();
 
