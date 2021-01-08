@@ -27,13 +27,13 @@ function showPage() {
 	let dataTrs = contentRow(data);
 
 	tableTag.appendChild(headerTr);
-	for(let i = 0; i < dataTrs.length; i++) {
-	tableTag.appendChild(addBtn(dataTrs[i], delFunc));
+	for (let i = 0; i < dataTrs.length; i++) {
+		tableTag.appendChild(addBtn(dataTrs[i], delFunc));
 
 
 	}
 
-document.getElementById('show').appendChild(tableTag);
+	document.getElementById('show').appendChild(tableTag);
 
 } // end of showPage()
 
@@ -106,6 +106,7 @@ function contentRow(result) {
 				trTag.style.backgroundColor = "";
 			}//
 
+			//tr 클릭 시 input에 데이터 출력
 			trTag.onclick = function() {
 
 				let input = document.getElementsByTagName('input');

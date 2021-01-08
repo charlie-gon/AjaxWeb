@@ -159,14 +159,11 @@ public class EmpDAO {
 	// tr 누르면 데이터 삽입
 	public EmployeeVO updateEmp(EmployeeVO vo) {
 		
-		Connection conn = null;
-		String sql = "update emp_temp set"
-					+ "first_name=?"
-					+ "last_name=?"
-					+ "email=?"
-					+ "job_id=?"
-					+ "where employee_id=?";
-				
+		
+		int r = 0;
+		String sql = " update emp_temp "
+					+ "set first_name=?,last_name=?,email=?,job_id=? where employee_id=?";
+
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 
@@ -175,8 +172,8 @@ public class EmpDAO {
 			pstmt.setString(3, vo.getEmail());
 			pstmt.setString(4, vo.getJobId());	
 			pstmt.setInt(5, vo.getEmployeeId());
-			pstmt.executeUpdate();
-			
+			r = pstmt.executeUpdate();
+			System.out.println(r + "건 업데이트 되었다");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

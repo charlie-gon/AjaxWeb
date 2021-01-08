@@ -21,16 +21,25 @@ public class updateServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
+		
+	
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
+		
 		String fName = request.getParameter("fName");
 		String lName = request.getParameter("lName");
 		String email = request.getParameter("email");
 		String jobId = request.getParameter("jobId");
+		String empId = request.getParameter("empId");
 		
 		EmployeeVO vo = new EmployeeVO();
 		vo.setFirstName(fName);
 		vo.setLastName(lName);
 		vo.setEmail(email);
 		vo.setJobId(jobId);
+		vo.setEmployeeId(Integer.parseInt(empId));
 		
 		EmpDAO dao = new EmpDAO();
 		EmployeeVO v = dao.updateEmp(vo);
@@ -46,11 +55,11 @@ public class updateServlet extends HttpServlet {
 		result += "</result>";
 		
 		response.getWriter().append(result);
+		
+		
+		
+		
+	}
 	
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
 
 }
