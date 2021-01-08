@@ -1,0 +1,54 @@
+<!-- 210108 / JSON 첫 수업 -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>html/ajaxJson.html</title>
+</head>
+<body>
+	<div id="show"></div>
+	<script>
+	
+		//JSON Array
+		let json = {
+			"name" : "John",
+			"age" : 30,
+			"cars" : [ "Ford", "BMW", "Fiat" ]
+		};
+		console.log(json.cars[1]);
+		//JSON Array
+
+		let xhtp = new XMLHttpRequest();
+
+		// 현재 파일 기준으로 MOCK_DATA.json 파일에 도달하기 위한 경로 설정(../data/MOCK_DATA.json)
+		xhtp.open('get', '../empListJson');
+		xhtp.send();
+		xhtp.onload = function() {
+			let data = xhtp.response;
+			let obj = JSON.parse(data); //JSON.parse = 자바스크립트 Object 타입으로 변환
+			//console.log(JSON.parse(data)); // Test
+
+			let tbl = document.createElement('table');
+			tbl.setAttribute('border', '1');
+			let trTag = document.createElement('tr');
+			for (let i = 0; i < obj.length; i++) {
+				let tdTag = document.createElement('td');
+				let val = obj[i].id + ' ' + obj[i].firstName + ' '
+						+ obj[i].lastName + ' ' + obj[i].email + ' '
+						+ obj[i].salary;
+				let tNode = document.createTextNode(val);
+
+				tdTag.appendChild(tNode);
+				trTag.appendChild(tdTag);
+				tbl.appendChild(trTag);
+				//empListJson에서 작성한 변수 이름에 맞게 작성할 것
+				console.log(obj[i].id + obj[i].firstName + obj[i].lastName);
+			}
+			console.log(document.getElementsByTagName('body'));
+			//document.getElementsByTagName('body')[0].appendChild(ul); //list 출력
+			document.getElementById('show').appendChild(tbl);
+		}
+	</script>
+</body>
+</html>

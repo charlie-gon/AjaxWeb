@@ -1,0 +1,50 @@
+<!-- 210108 / 교재 172~189 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery/jq_select1_1_test.html</title>
+    <script src="../js/jquery-3.5.1.min.js"></script>
+    <script>
+        $(function(){
+
+            let style_1 = {
+                'background-color':'turquoise',
+                'border':'2px solid red'
+            }
+
+            let style_2= {
+                'background-color':'grey',
+                'border':'2px solid yellow'
+            }
+
+            $('#txt2').closest('p')
+            .css(style_1);
+
+        });
+    </script>
+</head>
+<body>
+
+    <div id="wrap">
+        <h1>인접관계</h1>
+            <p>content</p>
+            <div>
+                <p class="txt">content2</p>
+                <p>content3</p>
+                <p>content4</p>
+
+            </div>
+
+            <div>
+                <p id="txt2">content5</p>
+                <p>content6</p>
+                <p>content7</p>
+
+            </div>
+    </div>
+    
+</body>
+</html>
