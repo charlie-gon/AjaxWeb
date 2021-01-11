@@ -1,111 +1,110 @@
-$(document).ready(function () { // 실행 함수 정의
-    $.ajax({ // ajax 호출 메소드
+// 210111
+// $(document).ready(function(){}) 방식 대신 -> $(function()) 이렇게 해도 됨
+
+$(function () {
+    // ajax 호출.
+    $.ajax({
         url: '../data/MOCK_DATA.json',
         dataType: 'json',
         success: showContent,
         error: function (result) {
-            console.log('클났네 클났어!: ' + result.statusText);
+            console.log('에러: ' + result.statusText);
         }
     });
-    // 버튼 이벤트 ver.02('추가' 버튼 클릭 시 데이터 출력)
-    $('#btn').click(function () {
-        console.log($('input[type]'));
-        let inputs = $('input[type]');
-
-        let tr = $('<tr />');
-
-        // 클릭 시 데이터 삭제되는 버튼 생성
-        let btnTag = $('<td />');
-        let btn = $('<button />').html('삭제');
-        $(btn).click(clickToDelete);
-
-        for (let i = 0; i < inputs.length; i++) {
-            let td = $('<td />').html(inputs[i].value);
-            tr.append(td);
-            btnTag.append(btn);
-            tr.append(btnTag);
-        }
-        $('#tbl').append(tr);
+    // 버튼이벤트.
+    $('#btn').click(addRow);
+    // 찾기 이벤트
+    $('#findBtn').on('click', function () {
+        let findId = $('#find_id').val();
+        let findRow = $('#' + findId + '').css('background-color', 'gray')
+        // 신규 row 생성.
+        let tr = makeNewTr();
+        findRow.before(tr);
     });
 });
 
-
-// 버튼 이벤트 ver.01('추가' 버튼 클릭 시 데이터 출력)
-function btnFunc() {
-
-    console.log($(this));
-    let id = $('#id').val();
-    let fName = $('#first_name').val();
-    let lName = $('#last_name').val();
-    let email = $('#email').val();
-
+function makeNewTr() {
+    let inputs = $('.input_val');
     let tr = $('<tr />');
-    let tdId = $('<td />').html(id);
-    let tdFirst = $('<td />').html(fName);
-    let tdLast = $('<td />').html(lName);
-    let tdEmail = $('<td />').html(email);
-    $('#tbl').append($(tr).append(tdId, tdFirst, tdLast, tdEmail));
-
+    $(tr).click(trToInputFunc);
+    $(tr).hover(function () {
+        $(this).css('background-color', 'yellow');
+    }, function () {
+        $(this).css('background-color', '');
+    });
+    for (let i = 0; i < inputs.length; i++) {
+        let td = $('<td />').html(inputs[i].value);
+        tr.append(td);
+    }
+    return tr;
 }
 
-// 아래쪽에 success 함수 기능 정의하여 간결하게 표현
+function addRow() {
+    let tr = makeNewTr();
+    $('#tbl').append(tr);
+}
+
+function btnFunc() {
+    console.log($(this));
+    let tr = $('<tr />');
+    let tdId = $('<td />').html($('#id').val());
+    let tdFirst = $('<td />').html($('#first_name').val());
+    let tdLast = $('<td />').html($('#last_name').val());
+    let tdEmail = $('<td />').html($('#email').val());
+    let trVal = $(tr).append(tdId, tdFirst, tdLast, tdEmail);
+    $('#tbl').append(trVal);
+}
+
 function showContent(result) {
     let headers = ['id', 'first_name', 'last_name', 'email'];
-    console.log(result);
     let data = result;
-
     let table = $('<table id="tbl" />').attr('border', '1');
-    let title = $('<tr />');
-
-    for (head of headers) {
-        let td = $('<th />').html(head);
-        title.append(td);
+    let titles = $('<tr />');
+    for (field of headers) {
+        let td = $('<th />').html(field.replace('_', ' ').toUpperCase());
+        titles.append(td);
     }
-    table.append(title);
-
-    $.each(data, function (idx, obj) { // = $(data).each(function())
+    table.append(titles);
+    $(data).each(function (idx, obj) {
         if (idx < 5) {
             let tr = $('<tr />');
+            $(tr).attr('id', obj.id);
 
-            // 클릭 시 데이터 삭제되는 버튼 생성
-            let btnTag = $('<td />');
-            let btn = $('<button />').html('삭제');
-            $(btn).click(clickToDelete);
+            // $(tr).click(trToInputFunc);
+            // $(tr).mouseover(function () {
+            //     $(this).css('background-color', 'yellow')
+            // })
+            // $(tr).mouseout(function () {
+            //     $(this).css('background-color', '')
+            // })
 
-            // tr 클릭 시 input에 데이터 출력
-            $(tr).click(trToInputFunc); // 아래 trToInputFunc 함수 정의
+            // 교재 247-248 참고
+            $(tr).on({
+                'click': trToInputFunc,
+                'mouseover': function () {
+                    $(this).css('background-color', 'yellow')
+                },
+                'mouseout': function () {
+                    $(this).css('background-color', '')
+                }
+            });
+
 
             for (field of headers) {
                 let td = $('<td />');
                 td.html(obj[field]);
-
                 tr.append(td);
-                btnTag.append(btn);
-                tr.append(btnTag);
             }
             table.append(tr);
         }
-    });
-    $('.show').append(table);
-
-
-    // tr 클릭 시 input에 데이터 출력
-    function trToInputFunc() {
-        console.log($(this).children().eq(0).html());
-        console.log($(this).children().eq(0));
-        $('#id').val($(this).children().eq(0).html());
-        $('#first_name').val($(this).children().eq(1).html());
-        $('#last_name').val($(this).children().eq(2).html());
-        $('#email').val($(this).children().eq(3).html());
-
-        // eq() = 선택한 요소 중 지정한 인덱스가 참조하는 요소만 선택.
-        // val = 선택한 양식(form)의 값을 가져오거나 설정한다.
-    }
-
+    })
+    $('#show').append(table);
 }
 
-// 버튼 클릭 시 데이터 삭제되는 함수
-function clickToDelete() {
-    console.log($(this));
-    $(this).parent().parent().remove();
+function trToInputFunc() {
+    console.log($(this).children().eq(0).html());
+    $('#id').val($(this).children().eq(0).html());
+    $('#first_name').val($(this).children().eq(1).html());
+    $('#last_name').val($(this).children().eq(2).html());
+    $('#email').val($(this).children().eq(3).html());
 }
