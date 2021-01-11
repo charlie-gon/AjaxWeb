@@ -1,4 +1,4 @@
-<!-- 210108 / 교재 172~189 -->
+<!-- 210111 -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,43 +8,49 @@
     <title>jQuery/jq_select1_1_test.html</title>
     <script src="../js/jquery-3.5.1.min.js"></script>
     <script>
-        $(function(){
+        // 제이쿼리로 간단하게 
+        let persons = [];
+        persons.push('hong');
+        persons.push('hwang');
+        persons.push('lee');
 
-            let style_1 = {
-                'background-color':'turquoise',
-                'border':'2px solid red'
-            }
+        $(document).ready(function(){
+            let table = $('<table />').attr('border','1').css('border','solid blue');
+            let ulTag = $('<ul />').attr('id','main');
+            $.each(persons, function(a,b){
+                let trTag = $('<tr />');
+                $(trTag).mouseover(function(){
+                    $(this).css('background-color','turquoise');
+                });
 
-            let style_2= {
-                'background-color':'grey',
-                'border':'2px solid yellow'
-            }
+                $(trTag).mouseout(function(){
+                    $(this).css('background-color','');
+                });
 
-            $('#txt2').closest('p')
-            .css(style_1);
+                console.log(a,b);
+                ulTag.append($('<li />').html(b));
+
+                trTag.append($('<td />').html(b));
+                let btnTag = $('<td />');
+                let btn = $('<button />').html(('OK'));
+
+                $(btn).click(function(){ // = 누르면 삭제
+                    $(this).parent().parent().remove(); // .parent = td / .parent.parent = tr
+                });
+         
+
+                btnTag.append(btn);
+                trTag.append(btnTag);
+                table.append(trTag);
+            });
+            $('body').append(ulTag);
+            $('body').append(table);
+
 
         });
     </script>
 </head>
 <body>
 
-    <div id="wrap">
-        <h1>인접관계</h1>
-            <p>content</p>
-            <div>
-                <p class="txt">content2</p>
-                <p>content3</p>
-                <p>content4</p>
-
-            </div>
-
-            <div>
-                <p id="txt2">content5</p>
-                <p>content6</p>
-                <p>content7</p>
-
-            </div>
-    </div>
-    
 </body>
 </html>
