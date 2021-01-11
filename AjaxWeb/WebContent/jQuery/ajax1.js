@@ -20,6 +20,8 @@ $(function () {
         // 신규 row 생성.
         let tr = makeNewTr();
         findRow.before(tr);
+        // after = 해당 ID값 이전에 값 삽입
+        // before = 해당 ID값 이후에 값 삽입
     });
 });
 
