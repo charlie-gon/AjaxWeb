@@ -1,0 +1,39 @@
+
+210112
+
+교재 198
+
+제이쿼리 정보는 api.jquery.com 참고할 것
+
+교재 199 제이쿼리 배열 관련 메서드 실습
+
+Eclipse - New Dynamic Web Project 생성(JavaCafe) - lib에 ojdbc 추가하여 오라클 DB 사용할 수 있도록 설정
+
+부트스트랩으로 실습
+
+오라클 테이블 생성
+
+create table product (
+item_no varchar2(20) primary key,
+item varchar2(100),
+category varchar2(10),
+price number,
+link varchar2(50),
+content varchar2(1000),
+like_it number,
+alt varchar2(100),
+image varchar2(100)
+);
+
+select * from product;
+
+데이터 삽입 (6개 정도)
+insert into product values(
+'bean_006','칠레 원두','bean',9500,'item.jsp','칠레산 맛있는 원두',4,'칠레 원두','');
+
+commit;
+
+데이터 수정할 때
+update product
+set like_it = '2'
+where item_no = 'bean_006';
