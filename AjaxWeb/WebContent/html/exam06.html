@@ -1,0 +1,48 @@
+<!-- exam06 -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>exam06.html</title>
+<script src="../js/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+
+	<div id="show"></div>
+
+	<table>
+		<tr>
+			<td><button id='btn' onclick='showList()'>등록</button></td>
+		</tr>
+	</table>
+
+	<script>
+		$(function() {
+			$.ajax({
+				url : '../data/MOCK_DATA.json',
+				dataType : 'json',
+				success : showList,
+				error : function(result) {
+					console.log('에러: ' + result);
+				}
+			});
+		});
+
+		function showList(result) {
+			let data = result;
+			let ulTag = $('<ul />');
+
+			$(data).each(function(idx, obj) {
+				for (field in obj) {
+					let liTag = $('<li />');
+					liTag.html(obj[field]);
+					ulTag.append(liTag);
+				}
+
+			});
+			$('#show').append(ulTag);
+		}
+	</script>
+</body>
+</html>

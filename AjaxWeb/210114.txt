@@ -1,0 +1,20 @@
+210114
+
+- 파일 업로드
+- jcafe/product.html
+
+* product.html / 기본 틀
+* FileUpload.java / [파일첨부] 클릭 시 이미지 가져오기 및 업로드 담당 서블릿
+* upload.jsp / 파일 업로드 창 작업 담당
+* PostProductServlet / [전송] 클릭 시 입력받은 값 지정된 경로에 출력
+
+C:tmp 폴더 생성
+
+PostProductServlet에 파라미터 값이 제대로 전달되는지 sysout으로 체크(null 확인)
+product.html 파일 실행 -> 이미지 파일 업로드 시 ecliipse console창에 설정된 값 반환되는지 확인
+
+아래 경로에 
+C:\Dev\workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\JavaCafe\images
+
+ProductDAO 클래스 insert into 구문 확인
+- null 값 처리 확인

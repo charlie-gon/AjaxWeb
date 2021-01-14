@@ -1,0 +1,77 @@
+
+<!-- exam04 / 김찬곤 -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>exam04</title>
+</head>
+<body>
+
+	<table>
+
+		<tr>
+			<td>이름</td>
+			<td><input type='text' id='name' name='name' value="Pikachu"></td>
+		</tr>
+
+		<tr>
+			<td>나이</td>
+			<td><input type='text' id='age' name='age' value='22'></td>
+		</tr>
+		<tr>
+			<td>번호</td>
+			<td><input type='text' id='phoneNum' name='phoneNum'
+				value='010-1544-7979'></td>
+		</tr>
+
+		<tr>
+			<td><button id='btn' onclick='joinBtn()'>등록</button></td>
+
+		</tr>
+
+	</table>
+
+	<div id="show"></div>
+
+	<script>
+		function joinBtn() {
+
+			let name = document.getElementById('name').value;
+			let age = document.getElementById('age').value;
+			let phoneNum = document.getElementById('phoneNum').value;
+
+			let persons = [];
+			persons.push(name);
+			persons.push(age);
+			persons.push(phoneNum);
+
+			let tbl = document.createElement('table');
+			tbl.setAttribute('border', '1px solid black');
+
+			let tr = document.createElement('tr');
+
+			let titles = [ '이름', '나이', '전화번호' ];
+
+			for (let i = 0; i < 3; i++) {
+				let td = document.createElement('th');
+				td.innerHTML = titles[i];
+				tr.append(td);
+			}
+			tbl.append(tr);
+
+			let trTag = document.createElement('tr');
+			for (let i = 0; i < persons.length; i++) {
+				let tdTag = document.createElement('td');
+				tdTag.append(persons[i]);
+				trTag.append(tdTag);
+			}
+			tbl.append(trTag);
+
+			document.getElementById('show').append(tbl);
+
+		}
+	</script>
+
+</body>
+</html>
