@@ -11,37 +11,32 @@
 
 	<div id="show"></div>
 
-	<table>
-		<tr>
-			<td><button id='btn' onclick='showList()'>등록</button></td>
-		</tr>
-	</table>
-
 	<script>
-		$(function() {
-			$.ajax({
-				url : '../data/MOCK_DATA.json',
-				dataType : 'json',
-				success : showList,
-				error : function(result) {
-					console.log('에러: ' + result);
+		let xml = new XMLHttpRequest();
+		xml.open('get', '../data/employees.xml');
+		xml.send();
+		xml.onload = showEmp;
+
+		function showEmp() {
+			let doc = xml.responseXML;
+			let record = doc.getElementsByTagName('record');
+
+			let ul = $('<ul />');
+			for (let i = 0; i < record.length; i++) {
+				for (let j = 0; j < record[i].childNodes.length; j++) {
+					let li = $('<li />');
+					if(record[i] != 2 && record[i] != 5 && record[i] != 6){
+						let val = record[i].childNodes[j].firstChild.nodeValue;
+						let tNode = document.createTextNode(val);
+						
+						li.append(tNode);
+						ul.append(li);
+					}
+					
 				}
-			});
-		});
+			}
+			$('#show').append(ul);
 
-		function showList(result) {
-			let data = result;
-			let ulTag = $('<ul />');
-
-			$(data).each(function(idx, obj) {
-				for (field in obj) {
-					let liTag = $('<li />');
-					liTag.html(obj[field]);
-					ulTag.append(liTag);
-				}
-
-			});
-			$('#show').append(ulTag);
 		}
 	</script>
 </body>

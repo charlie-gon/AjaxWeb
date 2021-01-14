@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>exam04</title>
+<script src="../js/jquery-3.5.1.min.js"></script>
 </head>
 <body>
 
@@ -35,7 +36,9 @@
 	<div id="show"></div>
 
 	<script>
+	
 		function joinBtn() {
+			
 
 			let name = document.getElementById('name').value;
 			let age = document.getElementById('age').value;
@@ -46,30 +49,28 @@
 			persons.push(age);
 			persons.push(phoneNum);
 
-			let tbl = document.createElement('table');
-			tbl.setAttribute('border', '1px solid black');
-
-			let tr = document.createElement('tr');
-
 			let titles = [ '이름', '나이', '전화번호' ];
-
-			for (let i = 0; i < 3; i++) {
-				let td = document.createElement('th');
-				td.innerHTML = titles[i];
+	
+			let tbl = $('<table />').attr('border','1');
+			
+			let tr = $('<tr />');
+			
+			for(field of titles){
+				let td = $('<th />').html(field);
 				tr.append(td);
 			}
+			
+			let trTag = $('<tr />');
+			for(field of persons){
+					let tdTag = $('<td />').html(field);
+					trTag.append(tdTag);
+				}
+			
 			tbl.append(tr);
-
-			let trTag = document.createElement('tr');
-			for (let i = 0; i < persons.length; i++) {
-				let tdTag = document.createElement('td');
-				tdTag.append(persons[i]);
-				trTag.append(tdTag);
-			}
 			tbl.append(trTag);
-
-			document.getElementById('show').append(tbl);
-
+			
+			$('#show').append(tbl);
+			 	
 		}
 	</script>
 
